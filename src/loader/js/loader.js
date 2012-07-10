@@ -1521,43 +1521,7 @@ Y.Loader.prototype = {
     * @return Boolean
     */
     isCSSLoaded: function(name, skip) {
-        //TODO - Make this call a batching call with name being an array
-        if (!name || !YUI.Env.cssStampEl || (!skip && this.ignoreRegistered)) {
-            Y.log('isCSSLoaded was skipped for ' + name, 'warn', 'loader');
-            return false;
-        }
-        if (!YUI.Env._cssLoaded) {
-            YUI.Env._cssLoaded = {};
-        }
-        var el = YUI.Env.cssStampEl,
-            ret = false,
-            mod = YUI.Env._cssLoaded[name],
-            style = el.currentStyle; //IE
-
-        
-        if (mod !== undefined) {
-            Y.log('isCSSLoaded was cached for ' + name, 'warn', 'loader');
-            return mod;
-        }
-
-        //Add the classname to the element
-        el.className = name;
-
-        if (!style) {
-            style = Y.config.doc.defaultView.getComputedStyle(el, null);
-        }
-
-        if (style && style.display === 'none') {
-            ret = true;
-        }
-
-        Y.log('Has Skin? ' + name + ' : ' + ret, 'info', 'loader');
-
-        el.className = ''; //Reset the classname to ''
-
-        YUI.Env._cssLoaded[name] = ret;
-
-        return ret;
+        return false;
     },
 
     /**
