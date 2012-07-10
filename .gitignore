@@ -9,6 +9,7 @@ CVS/
 .*.swp
 .svn
 *~
+*.uptodate
 src/build.log
 .com.apple.timemachine.supported
 src/out
