@@ -596,33 +596,36 @@ Y.Loader.prototype = {
     * @private
     */
     _inspectPage: function() {
-        
-        //Inspect the page for CSS only modules and mark them as loaded.
-        oeach(this.moduleInfo, function(v, k) {
-            if (v.type && v.type === CSS) {
-                if (this.isCSSLoaded(v.name)) {
-                    Y.log('Found CSS module on page: ' + v.name, 'info', 'loader');
-                    this.loaded[k] = true;
+        if(!YUI.Env.checkedScriptLoads) {
+            //Inspect the page for CSS only modules and mark them as loaded.
+            oeach(this.moduleInfo, function(v, k) {
+                if (v.type && v.type === CSS) {
+                    if (this.isCSSLoaded(v.name)) {
+                        Y.log('Found CSS module on page: ' + v.name, 'info', 'loader');
+                        this.loaded[k] = true;
+                    }
                 }
-            }
-        }, this);
-        
-        oeach(ON_PAGE, function(v, k) {
-           if (v.details) {
-               var m = this.moduleInfo[k],
-                   req = v.details.requires,
-                   mr = m && m.requires;
-               if (m) {
-                   if (!m._inspected && req && mr.length != req.length) {
-                       // console.log('deleting ' + m.name);
-                       delete m.expanded;
+            }, this);
+            
+            oeach(ON_PAGE, function(v, k) {
+               if (v.details) {
+                   var m = this.moduleInfo[k],
+                       req = v.details.requires,
+                       mr = m && m.requires;
+                   if (m) {
+                       if (!m._inspected && req && mr.length != req.length) {
+                           // console.log('deleting ' + m.name);
+                           delete m.expanded;
+                       }
+                   } else {
+                       m = this.addModule(v.details, k);
                    }
-               } else {
-                   m = this.addModule(v.details, k);
+                   m._inspected = true;
                }
-               m._inspected = true;
-           }
-       }, this);
+           }, this);
+        }
+        
+        YUI.Env.checkedScriptLoads = true;
     },
     /*
     * returns true if b is not loaded, and is required directly or by means of modules it supersedes.
@@ -1521,6 +1524,11 @@ Y.Loader.prototype = {
     * @return Boolean
     */
     isCSSLoaded: function(name, skip) {
+        /** 
+         * This function kills performance in FF 3.6. 
+         * To avoid huge delays in acceptance tests 
+         * always assume css is NOT loaded.
+         */
         return false;
     },
 
