@@ -556,9 +556,6 @@ Y.Loader.prototype = {
                     }
                 });
             }
-            if (mod.skinnable) {
-                self._addSkin(self.skin.defaultSkin, mod.name);
-            }
         });
     },
     /**
@@ -624,7 +621,7 @@ Y.Loader.prototype = {
                }
            }, this);
         }
-        
+
         YUI.Env.checkedScriptLoads = true;
     },
     /*
@@ -1012,11 +1009,6 @@ Y.Loader.prototype = {
             };
         }
 
-        if (o.skinnable && o.ext) {
-            skinname = this._addSkin(this.skin.defaultSkin, name);
-            o.requires.unshift(skinname);
-        }
-        
         if (o.requires.length) {
             o.requires = this.filterRequires(o.requires) || [];
         }
@@ -1052,21 +1044,6 @@ Y.Loader.prototype = {
 
                     smod = this.addModule(s, i);
                     sup.push(i);
-
-                    if (smod.skinnable) {
-                        o.skinnable = true;
-                        overrides = this.skin.overrides;
-                        if (overrides && overrides[i]) {
-                            for (j = 0; j < overrides[i].length; j++) {
-                                skinname = this._addSkin(overrides[i][j],
-                                         i, name);
-                                sup.push(skinname);
-                            }
-                        }
-                        skinname = this._addSkin(this.skin.defaultSkin,
-                                        i, name);
-                        sup.push(skinname);
-                    }
 
                     // looks like we are expected to work out the metadata
                     // for the parent module language packs from what is
@@ -1141,10 +1118,6 @@ Y.Loader.prototype = {
                     plug.requires = plug.requires || [];
                     plug.group = o.group;
                     this.addModule(plug, i);
-                    if (o.skinnable) {
-                        this._addSkin(this.skin.defaultSkin, i, name);
-                    }
-
                 }
             }
         }
@@ -1466,33 +1439,6 @@ Y.Loader.prototype = {
                         }
                     }
                 }, this);
-            }
-        }
-
-        // Create skin modules
-        if (mod.skinnable) {
-            skindef = this.skin.overrides;
-            oeach(YUI.Env.aliases, function(o, n) {
-                if (Y.Array.indexOf(o, name) > -1) {
-                    skinpar = n;
-                }
-            });
-            if (skindef && (skindef[name] || (skinpar && skindef[skinpar]))) {
-                skinname = name;
-                if (skindef[skinpar]) {
-                    skinname = skinpar;
-                }
-                for (i = 0; i < skindef[skinname].length; i++) {
-                    skinmod = this._addSkin(skindef[skinname][i], name);
-                    if (!this.isCSSLoaded(skinmod, this._boot)) {
-                        d.push(skinmod);
-                    }
-                }
-            } else {
-                skinmod = this._addSkin(this.skin.defaultSkin, name);
-                if (!this.isCSSLoaded(skinmod, this._boot)) {
-                    d.push(skinmod);
-                }
             }
         }
 
