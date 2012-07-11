@@ -291,8 +291,13 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
     @protected
     **/
     _ariaSay: function (stringId, subs) {
-        var message = this.get('strings.' + stringId);
-        this._ariaNode.set('text', subs ? Lang.sub(message, subs) : message);
+        /*
+         * Commented out since there is a patch that removes the load of the langs strings file for this file, which 
+         * causes this code to break. Furthermore, the site do not have accessibility support in its current form anyway 
+         * so if we are going to support that we have to fix this in another way later on.  
+         */
+        //var message = this.get('strings.' + stringId);
+        //this._ariaNode.setContent(subs ? Lang.sub(message, subs) : message);
     },
 
     /**
