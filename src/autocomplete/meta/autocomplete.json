@@ -54,8 +54,6 @@
             "autocomplete-list": {
                 "after": ["autocomplete-sources"],
 
-                "lang": ["en"],
-
                 "plugins": {
                     "autocomplete-list-keys": {
                         "condition": {
